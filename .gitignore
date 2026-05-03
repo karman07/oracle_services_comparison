@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# large OpenAPI assets
+/data/*.json
+/openapi_scm_25c.json
+/openapi_scm_26b (1).json
+/oracle-fusion-scm-rest-openapi.json
