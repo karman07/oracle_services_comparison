@@ -1,11 +1,11 @@
 'use client';
 
-import { BarChart2, Plus, Minus, RefreshCw, Layers, Download } from 'lucide-react';
+import { BarChart2, Plus, Minus, RefreshCw, Layers, Download, MessageSquare } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import type { DiffResult } from '../../types/diff.types';
 
-export type SectionId = 'summary' | 'all' | 'added' | 'removed' | 'modified' | 'schemas' | 'export';
+export type SectionId = 'summary' | 'all' | 'added' | 'removed' | 'modified' | 'schemas' | 'export' | 'chat';
 
 interface NavItem {
   id: SectionId;
@@ -62,7 +62,7 @@ export function Sidebar({ active, onNavigate, diffResult }: SidebarProps) {
 
       {navItems.map((item) => {
         const isActive = active === item.id;
-        const isDisabled = disabled && item.id !== 'summary';
+        const isDisabled = disabled && item.id !== 'summary' && item.id !== 'chat';
         const Icon = item.icon;
 
         return (
