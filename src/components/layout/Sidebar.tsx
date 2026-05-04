@@ -5,7 +5,7 @@ import type { ComponentType } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import type { DiffResult } from '../../types/diff.types';
 
-export type SectionId = 'summary' | 'all' | 'added' | 'removed' | 'modified' | 'schemas' | 'export' | 'chat';
+export type SectionId = 'summary' | 'all' | 'added' | 'removed' | 'modified' | 'schemas' | 'export';
 
 interface NavItem {
   id: SectionId;
