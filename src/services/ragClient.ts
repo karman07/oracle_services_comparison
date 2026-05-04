@@ -19,11 +19,13 @@ export type QueryResponse = {
   session_id?: string;
 };
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_RAG_API_BASE_URL ||
-  'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_RAG_API_BASE_URL;
 
 export async function queryRag(payload: QueryRequest): Promise<QueryResponse> {
+  if (!API_BASE_URL) {
+    throw new Error('RAG is disabled: NEXT_PUBLIC_RAG_API_BASE_URL is not configured');
+  }
+
   const res = await fetch(`${API_BASE_URL}/query`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

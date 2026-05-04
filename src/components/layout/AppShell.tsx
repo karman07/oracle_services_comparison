@@ -9,7 +9,6 @@ import { ApiDiffList } from '../ApiDiffList';
 import { SchemaDiffViewer } from '../SchemaDiffViewer';
 import { ExportPanel } from '../ExportPanel';
 import { LoadingScreen } from '../LoadingScreen';
-import { RagChatPanel } from '../RagChatPanel';
 import { useComparison } from '../../hooks/useComparison';
 import { useTheme } from '../../context/ThemeContext';
 
@@ -119,7 +118,6 @@ export function AppShell() {
           {activeSection === 'modified' && diffResult && <ApiDiffList diffs={diffResult.pathDiffs} filterType="modified" title="Modified APIs" />}
           {activeSection === 'schemas'  && diffResult && <SchemaDiffViewer schemaDiffs={diffResult.schemaDiffs} />}
           {activeSection === 'export'   && diffResult && <ExportPanel result={diffResult} />}
-          {activeSection === 'chat'     && <RagChatPanel />}
         </main>
       </div>
     </div>

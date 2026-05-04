@@ -80,6 +80,16 @@ export async function GET() {
       return NextResponse.json(cachedResult);
     }
 
+    const isVercelRuntime = process.env.VERCEL === '1';
+    const hasRemoteSpecs = Boolean(process.env.OPENAPI_25C_URL && process.env.OPENAPI_26B_URL);
+
+    if (isVercelRuntime && !hasRemoteSpecs) {
+      throw new Error(
+        'Vercel deployment requires OPENAPI_25C_URL and OPENAPI_26B_URL to be set. ' +
+          'Local OpenAPI files are not bundled by default to avoid oversized serverless artifacts.',
+      );
+    }
+
     const spec25c = process.env.OPENAPI_25C_URL
       ? await readOpenApiSpecFromUrl('25C', process.env.OPENAPI_25C_URL)
       : readOpenApiSpecFromCandidates('25C', [

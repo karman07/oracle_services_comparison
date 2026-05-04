@@ -83,7 +83,9 @@ npm run start
 
 ## Notes for Vercel / Serverless
 
-- next.config.ts includes output file tracing for JSON files so deployment bundles include data/*.json.
+- By default on Vercel builds, local OpenAPI files are not traced into serverless output to avoid oversized deployment artifacts.
+- Set OPENAPI_25C_URL and OPENAPI_26B_URL in Vercel environment variables.
+- If you must ship local files in Vercel, set OPENAPI_FORCE_LOCAL_TRACE=1 (only if artifact size remains within Vercel limits).
 - If you change file names/locations, update env vars accordingly.
 - For very large specs, prefer OPENAPI_*_URL so JSON is fetched at runtime instead of bundled.
 

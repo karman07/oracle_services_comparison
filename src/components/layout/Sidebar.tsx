@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart2, Plus, Minus, RefreshCw, Layers, Download, MessageSquare } from 'lucide-react';
+import { BarChart2, Plus, Minus, RefreshCw, Layers, Download } from 'lucide-react';
 import type { ComponentType } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import type { DiffResult } from '../../types/diff.types';
@@ -62,7 +62,7 @@ export function Sidebar({ active, onNavigate, diffResult }: SidebarProps) {
 
       {navItems.map((item) => {
         const isActive = active === item.id;
-        const isDisabled = disabled && item.id !== 'summary' && item.id !== 'chat';
+        const isDisabled = disabled && item.id !== 'summary';
         const Icon = item.icon;
 
         return (
