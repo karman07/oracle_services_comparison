@@ -7,6 +7,11 @@ import type { DiffResult } from '@/src/types/diff.types';
 
 export const dynamic = 'force-dynamic';
 
+// Default local file paths for the OpenAPI specs.
+// Override by setting OPENAPI_25C_URL / OPENAPI_26B_URL (remote) or OPENAPI_25C_PATH / OPENAPI_26B_PATH (local) in your environment.
+const DEFAULT_OPENAPI_25C_PATH = 'data/openapi_scm_25c.json';
+const DEFAULT_OPENAPI_26B_PATH = 'data/openapi_scm_26b.json';
+
 // Module-level cache: computed once per server process lifetime
 let cachedResult: DiffResult | null = null;
 
@@ -80,26 +85,16 @@ export async function GET() {
       return NextResponse.json(cachedResult);
     }
 
-    const isVercelRuntime = process.env.VERCEL === '1';
-    const hasRemoteSpecs = Boolean(process.env.OPENAPI_25C_URL && process.env.OPENAPI_26B_URL);
-
-    if (isVercelRuntime && !hasRemoteSpecs) {
-      throw new Error(
-        'Vercel deployment requires OPENAPI_25C_URL and OPENAPI_26B_URL to be set. ' +
-          'Local OpenAPI files are not bundled by default to avoid oversized serverless artifacts.',
-      );
-    }
-
     const spec25c = process.env.OPENAPI_25C_URL
       ? await readOpenApiSpecFromUrl('25C', process.env.OPENAPI_25C_URL)
       : readOpenApiSpecFromCandidates('25C', [
-          process.env.OPENAPI_25C_PATH ?? 'data/openapi_scm_25c.json',
+          process.env.OPENAPI_25C_PATH ?? DEFAULT_OPENAPI_25C_PATH,
           'openapi_scm_25c.json',
         ]);
     const spec26b = process.env.OPENAPI_26B_URL
       ? await readOpenApiSpecFromUrl('26B', process.env.OPENAPI_26B_URL)
       : readOpenApiSpecFromCandidates('26B', [
-          process.env.OPENAPI_26B_PATH ?? 'data/openapi_scm_26b.json',
+          process.env.OPENAPI_26B_PATH ?? DEFAULT_OPENAPI_26B_PATH,
           'openapi_scm_26b (1).json',
         ]);
 
