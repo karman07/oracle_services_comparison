@@ -173,16 +173,12 @@ export function SchemaDiffViewer({ schemaDiffs }: SchemaDiffViewerProps) {
           >
             {schema.changeType !== 'modified' ? (
               <>
-                <div style={{ fontSize: '13px', color: tokens.textMuted, display: 'grid', gridTemplateColumns: '120px 1fr', gap: '8px' }}>
-                  <span style={{ fontWeight: 600 }}>25C (Earlier)</span>
-                  <span>{schema.changeType === 'added' ? 'Not present' : 'Present'}</span>
-                  <span style={{ fontWeight: 600 }}>26B (Now)</span>
-                  <span>{schema.changeType === 'removed' ? 'Not present' : 'Present'}</span>
-                </div>
+                <SchemaSnapshotComparison oldSchema={schema.oldSchema} newSchema={schema.newSchema} />
                 <SchemaRouteMapping routes={schema.impactedRoutes} />
               </>
             ) : (
               <div style={{ overflowX: 'auto' }}>
+                <SchemaRouteMapping routes={schema.impactedRoutes} />
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
                   <span style={{ fontSize: '11px', color: tokens.colorAdded, border: `1px solid ${tokens.colorAddedBorder}`, padding: '2px 8px', borderRadius: '999px' }}>
                     Added: {schema.fieldDiffs.filter((fd) => fd.changeType === 'added').length}
@@ -235,7 +231,7 @@ export function SchemaDiffViewer({ schemaDiffs }: SchemaDiffViewerProps) {
                     );})}
                   </tbody>
                 </table>
-                <SchemaRouteMapping routes={schema.impactedRoutes} />
+                <SchemaSnapshotComparison oldSchema={schema.oldSchema} newSchema={schema.newSchema} />
               </div>
             )}
           </Accordion>
@@ -251,6 +247,79 @@ export function SchemaDiffViewer({ schemaDiffs }: SchemaDiffViewerProps) {
         onPageChange={setPage}
         onPageSizeChange={handlePageSize}
       />
+    </div>
+  );
+}
+
+function SchemaSnapshotComparison({
+  oldSchema,
+  newSchema,
+}: {
+  oldSchema?: SchemaDiff['oldSchema'];
+  newSchema?: SchemaDiff['newSchema'];
+}) {
+  const { tokens } = useTheme();
+
+  const renderSnapshot = (schema: SchemaDiff['oldSchema']) => {
+    if (!schema) {
+      return <span style={{ fontSize: '12px', color: tokens.textMuted, fontStyle: 'italic' }}>Not present</span>;
+    }
+
+    return (
+      <pre
+        style={{
+          margin: 0,
+          fontFamily: 'var(--font-dm-mono), monospace',
+          fontSize: '11px',
+          lineHeight: 1.45,
+          color: tokens.textSecondary,
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word',
+        }}
+      >
+        {JSON.stringify(schema, null, 2)}
+      </pre>
+    );
+  };
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '10px',
+        marginBottom: '12px',
+      }}
+    >
+      <div
+        style={{
+          border: `1px solid ${tokens.colorRemovedBorder}`,
+          borderRadius: tokens.radiusMd,
+          padding: '9px 10px',
+          background: `${tokens.colorRemoved}08`,
+          minWidth: 0,
+        }}
+      >
+        <div style={{ fontSize: '11px', fontWeight: 700, color: tokens.colorRemoved, marginBottom: '8px' }}>
+          25C (Earlier)
+        </div>
+        {renderSnapshot(oldSchema)}
+      </div>
+
+      <div
+        style={{
+          border: `1px solid ${tokens.colorAddedBorder}`,
+          borderRadius: tokens.radiusMd,
+          padding: '9px 10px',
+          background: `${tokens.colorAdded}08`,
+          minWidth: 0,
+        }}
+      >
+        <div style={{ fontSize: '11px', fontWeight: 700, color: tokens.colorAdded, marginBottom: '8px' }}>
+          26B (Now)
+        </div>
+        {renderSnapshot(newSchema)}
+      </div>
     </div>
   );
 }

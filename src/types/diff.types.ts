@@ -105,6 +105,8 @@ export interface SchemaFieldDiff {
 export interface SchemaDiff {
   schemaName: string;
   changeType: ChangeType;
+  oldSchema?: SchemaObject;
+  newSchema?: SchemaObject;
   fieldDiffs: SchemaFieldDiff[];
   impactedRoutes: SchemaRouteUsage[];
 }

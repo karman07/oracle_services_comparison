@@ -379,6 +379,8 @@ export function computeDiff(
       schemaDiffs.push({
         schemaName: name,
         changeType: 'added',
+        oldSchema: undefined,
+        newSchema: schemas26b[name],
         fieldDiffs: [],
         impactedRoutes: mapSchemaImpactedRoutes(name, schemaRouteUsage25c, schemaRouteUsage26b, updatedRouteKeys),
       });
@@ -389,6 +391,8 @@ export function computeDiff(
       schemaDiffs.push({
         schemaName: name,
         changeType: 'removed',
+        oldSchema: schemas25c[name],
+        newSchema: undefined,
         fieldDiffs: [],
         impactedRoutes: mapSchemaImpactedRoutes(name, schemaRouteUsage25c, schemaRouteUsage26b, updatedRouteKeys),
       });
@@ -400,6 +404,8 @@ export function computeDiff(
       if (diff.fieldDiffs.length > 0) {
         schemaDiffs.push({
           ...diff,
+          oldSchema: schemas25c[name],
+          newSchema: schemas26b[name],
           impactedRoutes: mapSchemaImpactedRoutes(name, schemaRouteUsage25c, schemaRouteUsage26b, updatedRouteKeys),
         });
       }
